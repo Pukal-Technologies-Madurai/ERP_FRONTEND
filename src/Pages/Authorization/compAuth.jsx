@@ -4,7 +4,7 @@ import { customSelectStyles } from "../../Components/tablecolumn";
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { fetchLink } from "../../Components/fetchComponent";
-
+import { isEqualNumber } from "../../Components/functions";
 
 const postCheck = (user, comp, rights) => {
     fetchLink({
@@ -27,17 +27,10 @@ const postCheck = (user, comp, rights) => {
 
 const TRow = ({ UserId, data, Sno }) => {
     const [viewRights, setViewRights] = useState(Number(data.View_Rights) === 1)
-    const [pflag, setpFlag] = useState(false);
 
     useEffect(() => {
         setViewRights(Number(data.View_Rights) === 1);
     }, [data])
-
-    useEffect(() => {
-        if (pflag === true) {
-            postCheck(UserId, data.Company_Id, viewRights)
-        }
-    }, [viewRights])
 
     return (
         <>
@@ -48,7 +41,11 @@ const TRow = ({ UserId, data, Sno }) => {
                     <Checkbox
                         sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
                         checked={viewRights}
-                        onChange={() => { setpFlag(true); setViewRights(!viewRights) }} />
+                        onChange={pre => {  
+                            setViewRights(pre.target.checked); 
+                            postCheck(UserId, data.Company_Id, viewRights) 
+                        }} 
+                    />
                 </TableCell>
             </TableRow>
         </>
@@ -63,11 +60,11 @@ const CompanyAuth = () => {
         UserId: storage?.UserId,
         Name: storage?.Name
     });
-    const [currentAuthId, setCurrentAuthId] = useState(storage?.Autheticate_Id)
+    const [currentAuthId, setCurrentAuthId] = useState(storage?.Autheticate_Id);
 
     useEffect(() => {
         fetchLink({
-            address: `masters/users/employee/dropDown?Company_id=${storage?.Company_id}`
+            address: `masters/user/dropDown?Company_id=${storage?.Company_id}&withAuth=true`
         }).then((data) => {
             if (data.success) {
                 setUsers(data.data);
@@ -110,9 +107,9 @@ const CompanyAuth = () => {
 
     const handleUserChange = (selectedOption) => {
         if (selectedOption) {
-            const selectedUser = users.find(user => user.UserId === selectedOption.value);
-            setCurrentUserId({ UserId: selectedUser.UserId, Name: selectedUser.Name });
-            setCurrentAuthId(selectedUser?.Token)
+            const selectedUser = users.find(user => isEqualNumber(user.UserId, selectedOption.value));
+            setCurrentUserId({ UserId: Number(selectedUser.UserId), Name: selectedUser.Name });
+            setCurrentAuthId(selectedUser?.Autheticate_Id)
         }
     };
 

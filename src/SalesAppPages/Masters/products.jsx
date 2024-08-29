@@ -55,7 +55,7 @@ const ProductsMaster = () => {
                     <ImagePreviewDialog url={row?.productImageUrl}>
                         <img
                             src={row?.productImageUrl}
-                            alt={'Picture'}
+                            alt={''}
                             style={{ height: 150, width: 150 }}
                         />
                     </ImagePreviewDialog>

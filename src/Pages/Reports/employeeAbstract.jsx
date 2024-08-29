@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext, Fragment } from "react";
-import api from "../../API";
 import { Card, CardContent, Paper, IconButton, Chip, Avatar, Collapse } from '@mui/material';
 import { MyContext } from "../../Components/context/contextProvider";
 import Select from 'react-select';

@@ -3,7 +3,7 @@ import { isEqualNumber, LocalDate, NumberFormat } from './functions';
 import { useEffect, useMemo, useState } from 'react';
 import api from '../API';
 import { Autocomplete, IconButton, Tooltip, TextField, Checkbox, Dialog, DialogContent, DialogTitle, DialogActions, Button, Box } from '@mui/material';
-import { CalculateOutlined, CheckBox, CheckBoxOutlineBlank, FilterAlt, FilterAltOff, FileDownload, SettingsOutlined } from '@mui/icons-material';
+import { CheckBox, CheckBoxOutlineBlank, FilterAlt, FilterAltOff, FileDownload, SettingsOutlined } from '@mui/icons-material';
 import { mkConfig, generateCsv, download } from 'export-to-csv';
 
 const formatString = (val, dataType) => {

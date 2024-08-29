@@ -4,10 +4,9 @@ import { Dialog, DialogContent, DialogTitle, DialogActions, Button, IconButton }
 import { KeyboardArrowLeft, CalendarMonth, QueryBuilder, Edit } from "@mui/icons-material";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-import api from "../../API";
 import Select from 'react-select';
 import { customSelectStyles } from "../../Components/tablecolumn";
-
+import { fetchLink } from "../../Components/fetchComponent";
 // import CalenderComp from "./calender";
 
 
@@ -50,30 +49,35 @@ const TaskActivity = () => {
     const [workDetails, setWorkDetails] = useState([])
 
     useEffect(() => {
-        fetch(`${api}userName?AllUser=${true}&BranchId=${parseData?.BranchId}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    setUsersDropdown(data.data)
-                }
-            }).catch(e => console.error(e))
-        fetch(`${api}task/workedDetails?Task_Levl_Id=${taskInfo?.Task_Levl_Id}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    setWorkDetails(data.data)
-                }
-            }).catch(e => console.log(e))
+
+        fetchLink({
+            address: `masters/user/dropDown?Company_id=${parseData?.Company_id}`
+        }).then(data => {
+            if (data.success) {                    
+                setUsersDropdown(data.data)
+            }
+        }).catch(e => console.error(e)) 
+
+        fetchLink({
+            address: `taskManagement/task/workedDetails?Task_Levl_Id=${taskInfo?.Task_Levl_Id}`
+        }).then(data => {
+            if (data.success) {
+                setWorkDetails(data.data)
+            }
+        }).catch(e => console.error(e)) 
+
     }, [])
 
     useEffect(() => {
-        fetch(`${api}task/assignEmployee?Task_Levl_Id=${taskInfo?.Task_Levl_Id}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    setAssignedEmployees(data.data)
-                }
-            }).catch(e => console.error(e))
+
+        fetchLink({
+            address: `taskManagement/task/assignEmployee?Task_Levl_Id=${taskInfo?.Task_Levl_Id}`
+        }).then(data => {
+            if (data.success) {
+                setAssignedEmployees(data.data)
+            }
+        }).catch(e => console.error(e)) 
+
     }, [reload])
 
     useEffect(() => {
@@ -111,22 +115,21 @@ const TaskActivity = () => {
 
     const postAndPutAssignEmpFun = () => {
         if (assignEmpInpt?.Emp_Id) {
-            fetch(`${api}task/assignEmployee`, {
+            fetchLink({
+                address: `taskManagement/task/assignEmployee`,
                 method: isEdit ? 'PUT' : 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(assignEmpInpt)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        toast.success(data.message);
-                        switchEmpAssign();
-                        setReload(!reload)
-                    } else {
-                        toast.error(data.message)
-                    }
-                })
-                .catch(e => console.error(e))
+                bodyData: assignEmpInpt,
+
+            }).then(data => {
+                if (data.success) {
+                    toast.success(data.message);
+                    switchEmpAssign();
+                    setReload(!reload)
+                } else {
+                    toast.error(data.message)
+                }
+            }).catch(e => console.error(e)) 
+
         } else {
             toast.warn('Select Employee')
         }

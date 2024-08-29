@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Button } from "react-bootstrap";
-import api from "../../API";
 import { IconButton, Dialog, DialogActions, DialogContent, DialogTitle, Card, CardContent } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { toast } from "react-toastify";
@@ -91,7 +90,7 @@ const Users = () => {
     };
 
     const editRow = (user) => {
-        const { UserId, Name, UserName, UserTypeId, Password, BranchId, Company_id } = user;
+        const { UserId, Name, UserName, UserTypeId, Password, BranchId } = user;
         setInputValue(pre => ({ ...pre, UserId, Name, UserName, UserTypeId, Password, BranchId }));
         setScreen(true);
     };
@@ -202,7 +201,7 @@ const Users = () => {
                                                 </IconButton>
                                                 <IconButton
                                                     onClick={() => {
-                                                        const { UserId, Name, UserName, UserTypeId, Password, BranchId, Company_id } = val;
+                                                        const { UserId, Name, UserName, UserTypeId, Password, BranchId } = val;
                                                         setInputValue(pre => ({ ...pre, UserId, Name, UserName, UserTypeId, Password, BranchId }));
                                                         setDialog(true);
                                                     }}

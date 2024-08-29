@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogTitle, DialogActions, Button, MenuItem, Au
 import { Add, Delete, Edit, ExpandLess, ExpandMore, KeyboardArrowLeft, Launch } from "@mui/icons-material";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-import api from "../../API";
 import Select from 'react-select';
 import { customSelectStyles } from "../../Components/tablecolumn";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -95,6 +94,7 @@ const ProjectDetails = () => {
                 setUsersDropdown(data.data)
             }
         }).catch(e => console.error(e))
+        
         fetchLink({
             address: `taskManagement/project/schedule/scheduleType`
         }).then(data => {
@@ -102,6 +102,7 @@ const ProjectDetails = () => {
                 setScheleType(data.data)
             }
         }).catch(e => console.error(e))
+
         fetchLink({
             address: `taskManagement/statusList`
         }).then(data => {
@@ -110,13 +111,15 @@ const ProjectDetails = () => {
                 setWorkStatus(data.data)
             }
         }).catch(e => console.error(e))
+
         fetchLink({
             address: `taskManagement/task/assignEmployee/task/dropDown`
         }).then(data => {
             if (data.success) {
                 setTasks(data.data)
             }
-        }).catch(e => console.error(e))            
+        }).catch(e => console.error(e))    
+
         fetchLink({
             address: `masters/taskType`
         }).then(data => {

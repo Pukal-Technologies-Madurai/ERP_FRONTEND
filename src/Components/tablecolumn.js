@@ -104,3 +104,33 @@ export const companyDetails = [
         ifsc: 'TMBL0000002'
     },
 ]
+
+export const prodetails = [
+    {
+        name: 'SNo',
+        selector: (row, i) => i + 1,
+        sortable: false,
+        width: '60px'
+    },
+    {
+        name: 'Product Name',
+        selector: (row) => row.Product_Name,
+        sortable: true,
+        minWidth: '350px',
+    },
+    {
+        name: 'Quantity',
+        selector: (row) => row.Bill_Qty,
+        sortable: true,
+    },
+    {
+        name: 'Rate',
+        selector: (row) => row.Item_Rate,
+        sortable: true,
+    },
+    {
+        name: 'Amount',
+        selector: (row) => row.Amount,
+        sortable: true,
+    },
+]

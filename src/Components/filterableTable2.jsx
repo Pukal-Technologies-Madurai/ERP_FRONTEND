@@ -83,33 +83,44 @@ const FilterableTable = ({ dataArray, columns, onClickFun, isExpendable, expanda
 
                     {(isExpendable === true && expandableComp) && (
                         <TableCell className='fa-13 border-end'>
-                            <IconButton size='small' onClick={() => setOpen(pre => !pre)}>{open ? <KeyboardArrowUp sx={{fontSize}} /> : <KeyboardArrowDown sx={{fontSize}} />}</IconButton>
+                            <IconButton size='small' onClick={() => setOpen(pre => !pre)}>{open ? <KeyboardArrowUp sx={{ fontSize }} /> : <KeyboardArrowDown sx={{ fontSize }} />}</IconButton>
                         </TableCell>
                     )}
 
                     {columns?.map(column => (
-                        Object.entries(row).map(([key, value]) => (
-                            (
-                                (column.Field_Name === key)
-                                &&
-                                (isEqualNumber(column?.Defult_Display, 1) || isEqualNumber(column?.isVisible, 1))
-                            ) && (
+                        isEqualNumber(column?.Defult_Display, 1) || isEqualNumber(column?.isVisible, 1)
+                    ) && (
+                            (Boolean(column?.isCustomCell) === false || !column.Cell) ? (
+                                Object.entries(row).map(([key, value]) => (
+                                    (
+                                        (column.Field_Name === key)
+                                        &&
+                                        (isEqualNumber(column?.Defult_Display, 1) || isEqualNumber(column?.isVisible, 1))
+                                    ) && (
+                                        <TableCell
+                                            key={column + index}
+                                            className='fa-13 border-end'
+                                            onClick={() => onClickFun ? onClickFun(row) : console.log('Function not supplied')}
+                                        >
+                                            {formatString(value, column?.Fied_Data)}
+                                        </TableCell>
+                                    )
+                                ))
+                            ) : (
                                 <TableCell
                                     key={column + index}
                                     className='fa-13 border-end'
-                                    onClick={() => onClickFun ? onClickFun(row) : console.log('Function not supplied')}
                                 >
-                                    {formatString(value, column?.Fied_Data)}
+                                    {column.Cell({ row, Field_Name: column.Field_Name })}
                                 </TableCell>
                             )
-                        ))
-                    ))}
+                        ))}
 
                 </TableRow>
 
                 {(isExpendable === true && expandableComp && open) && (
                     <TableRow>
-                        <TableCell colSpan={Number(columns?.length) + 1}>{expandableComp({row, index})}</TableCell>
+                        <TableCell colSpan={Number(columns?.length) + 1}>{expandableComp({ row, index })}</TableCell>
                     </TableRow>
                 )}
             </Fragment>
@@ -130,30 +141,42 @@ const FilterableTable = ({ dataArray, columns, onClickFun, isExpendable, expanda
                                     style={{ backgroundColor: '#EDF0F7' }}
                                 ></TableCell>
                             )}
-                            {columns.map((column, ke) => (isEqualNumber(column?.Defult_Display, 1) || isEqualNumber(column?.isVisible, 1)) && (
-                                <TableCell
-                                    key={ke}
-                                    className='fa-13 fw-bold border-end border-top'
-                                    style={{ backgroundColor: '#EDF0F7' }}
-                                    sortDirection={
-                                        sortCriteria.some(criteria => criteria.columnId === column.Field_Name)
-                                            ? sortCriteria.find(criteria => criteria.columnId === column.Field_Name).direction
-                                            : false
-                                    }
-                                >
-                                    <TableSortLabel
-                                        active={sortCriteria.some(criteria => criteria.columnId === column.Field_Name)}
-                                        direction={
-                                            sortCriteria.some(criteria => criteria.columnId === column.Field_Name)
-                                                ? sortCriteria.find(criteria => criteria.columnId === column.Field_Name).direction
-                                                : 'asc'
-                                        }
-                                        onClick={() => handleSortRequest(column.Field_Name)}
-                                    >
-                                        {column?.Field_Name?.replace(/_/g, ' ')}
-                                    </TableSortLabel>
-                                </TableCell>
-                            ))}
+                            {columns.map((column, ke) => {
+                                return (isEqualNumber(column?.Defult_Display, 1) || isEqualNumber(column?.isVisible, 1)) && (
+                                    (Boolean(column?.isCustomCell) === false || !column.Cell) ? (
+                                        <TableCell
+                                            key={ke}
+                                            className='fa-13 fw-bold border-end border-top'
+                                            style={{ backgroundColor: '#EDF0F7' }}
+                                            sortDirection={
+                                                sortCriteria.some(criteria => criteria.columnId === column.Field_Name)
+                                                    ? sortCriteria.find(criteria => criteria.columnId === column.Field_Name).direction
+                                                    : false
+                                            }
+                                        >
+                                            <TableSortLabel
+                                                active={sortCriteria.some(criteria => criteria.columnId === column.Field_Name)}
+                                                direction={
+                                                    sortCriteria.some(criteria => criteria.columnId === column.Field_Name)
+                                                        ? sortCriteria.find(criteria => criteria.columnId === column.Field_Name).direction
+                                                        : 'asc'
+                                                }
+                                                onClick={() => handleSortRequest(column.Field_Name)}
+                                            >
+                                                {column?.Field_Name?.replace(/_/g, ' ')}
+                                            </TableSortLabel>
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell
+                                            key={ke}
+                                            className='fa-13 fw-bold border-end border-top'
+                                            style={{ backgroundColor: '#EDF0F7' }}
+                                        >
+                                            {column?.Field_Name?.replace(/_/g, ' ')}
+                                        </TableCell>
+                                    )
+                                )
+                            })}
                         </TableRow>
                     </TableHead>
 

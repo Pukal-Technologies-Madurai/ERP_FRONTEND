@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../API";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { isEqualNumber } from "../../Components/functions";
 
 function onlynum(e) {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -59,7 +60,7 @@ const CustomerAddScreen = ({ screen, setScreen, underArray, row, refresh }) => {
     }
 
     const filteredOptions = underArray
-        .filter(obj => ((parseInt(obj.User_Type_Id) === 5) && (obj.Id != value?.Cust_Id)))
+        .filter(obj => ((parseInt(obj.User_Type_Id) === 5) && !isEqualNumber(obj.Id, value?.Cust_Id)))
         .map(obj => ({ value: obj.Cust_Id, label: obj.Customer_name }));
 
     const branchOptions = branchData

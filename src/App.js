@@ -67,7 +67,7 @@ import ItemBasedReport from "./Pages/Analytics/ItemBased";
 import DataEntryAttendance from "./Pages/DataEntry/dataEntryAttendance";
 import ReportTemplateCreation from "./Pages/Analytics/reportTemplateCreation";
 import ReportTemplates from "./Pages/Analytics/reportTemplates";
-import SalesReport from "./Pages/ERP/Report/LedgerTransaction";
+import SalesReport from "./Pages/ERP/Report/salesReport";
 import RetailersMaster from "./SalesAppPages/Masters/retailers";
 import ProductsMaster from "./SalesAppPages/Masters/products";
 
@@ -131,9 +131,12 @@ function App() {
       <ToastContainer />
       <BrowserRouter>
         {loading ? (
-          <div className="overlay">
-            <CircularProgress className="spinner" />
-          </div>
+          // <div className="overlay">
+          //   <CircularProgress className="spinner" />
+          // </div>
+          <div id="loading-screen" className="loading-screen">
+                <div className="loading-spinner"></div>
+            </div>
         ) : !login ? (
           <>
             <Routes>

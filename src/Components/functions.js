@@ -20,6 +20,36 @@ export const LocalDateWithTime = (dateObj) => {
     return receivedDate.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
+export const DaysBetween = (StartDate, EndDate) => {
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    const start = Date.UTC(StartDate.getFullYear(), StartDate.getMonth(), StartDate.getDate());
+    const end = Date.UTC(EndDate.getFullYear(), EndDate.getMonth(), EndDate.getDate());
+
+    return Math.round((end - start) / oneDay) + 1;
+}
+
+export const getDaysInPreviousMonths = (months) => {
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+    let totalDays = 0;
+
+    for (let i = 1; i <= months; i++) {
+        currentMonth--;
+
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        totalDays += daysInMonth;
+    }
+
+    return totalDays;
+}
+
 export const LocalTime = (dateObj) => {
     const receivedDate = dateObj ? new Date(dateObj) : new Date();
     return receivedDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })

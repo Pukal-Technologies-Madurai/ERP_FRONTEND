@@ -213,10 +213,9 @@ const ReportTemplateCreation = () => {
 
     const saveTemplate = () => {
         const validateSet = new Set();
-        inputValues.tableJoins?.map(item => {
+        inputValues.tableJoins?.forEach(item => {
             validateSet.add(item.Join_First_Table_Id);
             validateSet.add(item.Join_Second_Table_Id);
-            return
         })
         console.log(validateSet.size);
         if (validateSet.size !== (inputValues.tableJoins.length + 1)) {
